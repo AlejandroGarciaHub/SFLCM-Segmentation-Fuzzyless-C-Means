@@ -23,7 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		49D57FCE21B59ECC00B4B89D /* SFLCM - Segmentation Fuzzyless C-Means */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SFLCM - Segmentation Fuzzyless C-Means"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4979EA0121B70C3600292091 /* header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = "<group>"; };
+		49D57FCE21B59ECC00B4B89D /* main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = main; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D57FD121B59ECC00B4B89D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,7 +50,7 @@
 		49D57FCF21B59ECC00B4B89D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				49D57FCE21B59ECC00B4B89D /* SFLCM - Segmentation Fuzzyless C-Means */,
+				49D57FCE21B59ECC00B4B89D /* main */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				49D57FD121B59ECC00B4B89D /* main.cpp */,
+				4979EA0121B70C3600292091 /* header.h */,
 			);
 			path = "SFLCM - Segmentation Fuzzyless C-Means";
 			sourceTree = "<group>";
@@ -79,7 +81,7 @@
 			);
 			name = "SFLCM - Segmentation Fuzzyless C-Means";
 			productName = "SFLCM - Segmentation Fuzzyless C-Means";
-			productReference = 49D57FCE21B59ECC00B4B89D /* SFLCM - Segmentation Fuzzyless C-Means */;
+			productReference = 49D57FCE21B59ECC00B4B89D /* main */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -240,7 +242,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lopencv_videoio",
+					"-lopencv_video",
+					"-lopencv_ts",
+					"-lopencv_superres",
+					"-lopencv_stitching",
+					"-lopencv_shape",
+					"-lopencv_photo",
+					"-lopencv_objdetect",
+					"-lopencv_ml",
+					"-lopencv_imgproc",
+					"-lopencv_imgcodecs",
+					"-lopencv_highgui",
+					"-lopencv_flann",
+					"-lopencv_features2d",
+					"-lopencv_core",
+					"-lopencv_videostab",
+					"-lopencv_calib3d",
+				);
+				PRODUCT_NAME = main;
 			};
 			name = Debug;
 		};
@@ -248,7 +271,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lopencv_videoio",
+					"-lopencv_video",
+					"-lopencv_ts",
+					"-lopencv_superres",
+					"-lopencv_stitching",
+					"-lopencv_shape",
+					"-lopencv_photo",
+					"-lopencv_objdetect",
+					"-lopencv_ml",
+					"-lopencv_imgproc",
+					"-lopencv_imgcodecs",
+					"-lopencv_highgui",
+					"-lopencv_flann",
+					"-lopencv_features2d",
+					"-lopencv_core",
+					"-lopencv_videostab",
+					"-lopencv_calib3d",
+				);
+				PRODUCT_NAME = main;
 			};
 			name = Release;
 		};
