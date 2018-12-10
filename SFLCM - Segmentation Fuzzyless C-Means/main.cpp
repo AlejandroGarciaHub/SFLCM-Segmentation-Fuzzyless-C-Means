@@ -13,7 +13,7 @@
 int main(int argc, char **argv) {
     printf
     ("------------------------------------------------------------------------\n");
-    if (argc != 11) {
+    if (argc != 11&&argc!=12&&argc!=13) {
         printf("USAGE: fcm <input file>\n");
         exit(1);
     }
@@ -45,6 +45,49 @@ int main(int argc, char **argv) {
   //  centroidsFlags=Mat::zeros(clusterN, 1, CV_8S);
 
    // membershipMatrix=Mat::zeros(image.rows*image.cols, clusterN, CV_8S);
+    
+    if (argc==12||argc==13) {
+        char *resultadosIteracionesPath = (char *)malloc(sizeof(char)*20);
+        resultadosIteracionesPath = argv[11];
+        
+        FILE *resultadosIteraciones;
+        
+        if ((resultadosIteraciones = fopen(resultadosIteracionesPath, "r")) == NULL) {
+            printf("Failed to open input file.");
+            return -1;
+        }
+        
+        int i,j;
+        
+         if (argc==13) {
+             numResultadosSinMejora=atoi(argv[12]);
+         }
+         else{
+             printf("Sin numero de resultados indicado, se usará 1\n");
+         }
+        
+        iteraciones=(double *) malloc(numResultadosSinMejora*sizeof(double));
+        
+        for (i = 0; i < numResultadosSinMejora; i++) {
+            for (j = 0; j < 3; j++) {
+                fscanf(resultadosIteraciones, "%lf", &iteraciones[i]);
+            }
+        }
+        fclose(resultadosIteraciones);
+        
+        double prom=0;
+        for (i = 0; i < numResultadosSinMejora; i++) {
+            prom+=iteraciones[i];
+       //     printf("%d\n",(int)iteraciones[i]);
+        }
+        prom/=numResultadosSinMejora;
+        prom*=0.6;
+        mejoraIteracion=(int)prom;
+      //  printf("Mejora iteracion\n%d\n", mejoraIteracion);
+        
+         //  return 0;
+    }
+
     
     degree_of_membs=(double ***) malloc(image.rows*sizeof(double **));
     

@@ -37,6 +37,8 @@ FILE *Results;
 
 double ***degree_of_membs;
 
+double *iteraciones;
+
 int num_dimensions=3;
 double epsilon;
 double fuzziness;
@@ -44,6 +46,7 @@ double umbral=0.000000003;
 double umbral2=0.00001;
 
 int iteracion;
+int numResultadosSinMejora=1;
 
 int uno=1;
 
@@ -307,7 +310,7 @@ double timeval_diff(struct timeval *a, struct timeval *b){
 double SSE(Mat image, Mat imageClusterAssigned, Mat centroidsPrincipales, int clusterN){
     int i,k;
     double error = 0;
-    
+    double errorSum=0;
 
         for (int ren = 0; ren < image.rows; ren++){ //Numero de centroides
             for (int col =0 ; col < image.cols; col++){
@@ -316,9 +319,10 @@ double SSE(Mat image, Mat imageClusterAssigned, Mat centroidsPrincipales, int cl
                     for (k = 0; k < num_dimensions; k++){ //Numero de caracteristicas
                         sum+= pow( int(centroidsPrincipales.at<Vec3b>(i,0)[k]) - int(image.at<Vec3b>(ren,col)[k]) , 2);
                     }
-                    sum*=degree_of_membs[ren][col][i];
+                 //   errorSum=(double)sum*degree_of_membs[ren][col][i];
             }
             error += sqrt(sum);
+         //   printf("Error: %lf\n", error);
         }
     }
     return error;
