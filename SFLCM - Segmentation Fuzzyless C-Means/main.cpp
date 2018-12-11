@@ -9,7 +9,6 @@
 
 #include "header.h"
 
-
 int main(int argc, char **argv) {
     printf
     ("------------------------------------------------------------------------\n");
@@ -38,6 +37,8 @@ int main(int argc, char **argv) {
     image=readImage(imageName);
     imageClusterAssigned = Mat::zeros(image.rows, image.cols, CV_32S);
     imageFlags=Mat::zeros(image.rows, image.cols, CV_32S);
+    imageFlagsIteraciones=Mat::zeros(image.rows, image.cols, CV_32S);
+    centroidsFlags=Mat::zeros(clusterN, 1, CV_32S);
 
     //pixelsNumber=image.rows*image.cols;
     
@@ -139,7 +140,7 @@ int main(int argc, char **argv) {
 */
 
          iteracion++;
-     } while (fabs(max_diff)> epsilon);
+     } while (iteracion<=mejoraIteracion||fabs(max_diff)> epsilon);
     
     
     /*******Termina tiempo*******/

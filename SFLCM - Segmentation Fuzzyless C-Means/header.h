@@ -48,9 +48,11 @@ double umbral2=0.00001;
 int iteracion;
 int numResultadosSinMejora=1;
 
+int estableNumIteraciones=1;
+
 int uno=1;
 
-Mat image, centroidsPrincipales,centroidsFlags,imageClusterAssigned,imageFlags,newCentroids, membershipMatrix;
+Mat image, centroidsPrincipales,centroidsFlags,imageClusterAssigned,imageFlags,newCentroids, membershipMatrix,imageFlagsIteraciones;
 
 
 
@@ -63,6 +65,8 @@ int calculate_centre_vectors();
 void crearObjetoEstable(int i,int l);
 void display(Mat image, Mat clusters, Mat centroids, int clusterN, char *path);
 double SSE(Mat image, Mat imageClusterAssigned, Mat centroidsPrincipales, int clusterN);
+
+void crearGrupoEstable(int i);
 
 /* Image loading */
 Mat readImage(char *path){
@@ -163,7 +167,7 @@ int calculate_centre_vectors() {
     double sumR,sumG,sumB;
     int cont;
     int l;
-    for (l = 0; l < clusterN; l++) {
+    for (l = 0; l < clusterN&&centroidsFlags.at<int>(i,0)!=uno; l++) {
         sumR=0;
         sumG=0;
         sumB=0;
@@ -180,9 +184,21 @@ int calculate_centre_vectors() {
                 }
             }
         }
-        centroidsPrincipales.at<Vec3b>(l,0)[0]=int(sumR/cont);
-        centroidsPrincipales.at<Vec3b>(l,0)[1]=int(sumG/cont);
-        centroidsPrincipales.at<Vec3b>(l,0)[2]=int(sumB/cont);
+        int rAnterior=centroidsPrincipales.at<Vec3b>(l,0)[0];
+        int gAnterior=centroidsPrincipales.at<Vec3b>(l,0)[1];
+        int bAnterior=centroidsPrincipales.at<Vec3b>(l,0)[2];
+        
+        int rNuevo=int(sumR/cont);
+        int gNuevo=int(sumG/cont);
+        int bNuevo=int(sumB/cont);
+        if(rAnterior==rNuevo&&gAnterior==gNuevo&&bAnterior==bNuevo){
+            crearGrupoEstable(l);
+        }
+        else{
+            centroidsPrincipales.at<Vec3b>(l,0)[0]=int(sumR/cont);
+            centroidsPrincipales.at<Vec3b>(l,0)[1]=int(sumG/cont);
+            centroidsPrincipales.at<Vec3b>(l,0)[2]=int(sumB/cont);
+        }
     }
     return 0;
 }
@@ -253,18 +269,26 @@ double update_degree_of_membership() {
                     
                     if (diferencia>porcentaje) {
                         degree_of_membs[i][l][j] = new_uij;
+                        imageFlagsIteraciones.at<int>(i,l)=0;
                     }
-                    else{
+                    else {
                         if (j==imageClusterAssigned.at<int>(i,l)) {
                             //                  printf("J ES IGUAL\n");
                             degree_of_membs[i][l][j] = new_uij;
-                            crearObjetoEstable(i, l);
+                            
+                            if(imageFlagsIteraciones.at<int>(i,l)==estableNumIteraciones){
+                                crearObjetoEstable(i, l);
+                            }
+                            else{
+                                imageFlagsIteraciones.at<int>(i,l)+=1;
+                            }
                         }
                         else{
                             //               printf("J NOOO ES IGUAL\n");
                             degree_of_membs[i][l][j] = new_uij;
                         }
                     }
+
                 }
                 else{
                     degree_of_membs[i][l][j] = new_uij;
@@ -277,6 +301,10 @@ double update_degree_of_membership() {
 
 void crearObjetoEstable(int i,int l){
     imageFlags.at<int>(i,l)=1;
+}
+
+void crearGrupoEstable(int i){
+    centroidsFlags.at<int>(i,0)=1;
 }
 
 
